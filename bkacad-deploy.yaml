@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bkacad-luongminhhieu
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bkacad-luongminhhieu
+  template:
+    metadata:
+      labels:
+        app: bkacad-luongminhhieu
+    spec:
+      volumes:
+      - name: default 
+        persistentVolumeClaim:
+          claimName: bkacad-pvc
+      containers:
+      - name: 
+        image: docker.io/minhhieudn98/hieuluong
+        ports:
+          - containerPort: 8080
+            name: nodejs
+        volumeMounts:
+          - mountPath: ""
+            name: default
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bkacad-luongminhhieu
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8080
+  selector:
+    app: bkacad-luongminhhieu
